@@ -1,0 +1,6 @@
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - patch
