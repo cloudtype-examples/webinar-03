@@ -221,7 +221,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
   2. `ingress-nginx-controller` LoadBalancer 외부 IP CNAME 레코드 등록
      - `ingress-nginx-controller` LoadBalancer 외부 IP(Hostname) 확인
         ```bash
-        kubectl get svc \
+        $ kubectl get svc \
             -n ingress-nginx \
             ingress-nginx-controller \
             -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'  # EKS의 경우 LoadBalancer의 외부 IP를 URL 형식으로 할당
@@ -237,8 +237,8 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
   3. Cloudflare API KEY 환경변수 등록
 
       ```bash
-      export CLOUDFLARE_ACME_EMAIL=<Cloudflare 계정 ID>
-      export CLOUDFLARE_API_TOKEN=<Cloudflare API KEY>
+      $ export CLOUDFLARE_ACME_EMAIL=<Cloudflare 계정 ID>
+      $ export CLOUDFLARE_API_TOKEN=<Cloudflare API KEY>
       ```
 
   4. Cluster Issuer / Certificate 생성
