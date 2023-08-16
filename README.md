@@ -121,8 +121,8 @@ chmod 700 get_helm.sh
 
 ```bash
 $ eksctl create cluster --name=[클러스터명] \
-                      --region=[리전] \
-                      --without-nodegroup 
+                        --region=[리전] \
+                        --without-nodegroup 
 ```
 
 ### 키페어 생성
@@ -164,7 +164,7 @@ $ eksctl create nodegroup --cluster=[클러스터명] \
   ```bash
   $ helm repo add projectcalico https://docs.tigera.io/calico/charts
   $ helm repo update
-  $ echo '{ installation: {kubernetesProvider: EKS }}' > values.yaml
+  $ echo '{ installation: { kubernetesProvider: EKS }}' > values.yaml
   $ kubectl create namespace tigera-operator
   $ helm install calico projectcalico/tigera-operator --version v3.25.1 -f values.yaml --namespace tigera-operator
   ```
@@ -184,7 +184,7 @@ $ eksctl create nodegroup --cluster=[클러스터명] \
   $ kubectl apply -f <(cat <(kubectl get clusterrole aws-node -o yaml) append.yaml)
   $ kubectl set env daemonset aws-node -n kube-system ANNOTATE_POD_IP=true
   $ kubectl get po -n calico-system | grep calico-kube-controllers-                  # pod 이름은 난수 형태로 할당되어 개별적으로 확인 필요
-  $ kubectl delete pod calico-kube-controllers-[조회한 pod 이름] -n calico-system       # 위 명령어에서 확인된 pod 이름 입력하여 삭제
+  $ kubectl delete pod calico-kube-controllers-[조회한 pod 이름] -n calico-system    # 위 명령어에서 확인된 pod 이름 입력하여 삭제
   $ kubectl get po -n calico-system | grep calico-kube-controllers-                  # 삭제 후 재생성된 pod 정상 상태 확인
   ```
 
@@ -210,12 +210,37 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
 ### Cloudflare 도메인 및 인증서 적용
 
   1. Cloudflare API KEY 발급
+     - Cloudflare **내 프로필 > API 토큰** 페이지 이동
+     - **토큰 생성** 버튼 클릭
+     - **영역 DNS 편집** 템플릿 사용 버튼 클릭
+     - 다음 이미지와 같이 세팅 후, 요약 계속 버튼 클릭(영역 리소스 항목은 사용할 도메인 선택)
+        <p align="center">
+        <img src="https://files.cloudtype.io/webinar/webinar-03-01.png" width="80%" alt="Cloudtype"/>
+        </p>
+     - 클라우드타입과 연동할 도메인 확인 후, 토큰 생성 버튼 클릭
   2. `ingress-nginx-controller` LoadBalancer 외부 IP CNAME 레코드 등록
+     - `ingress-nginx-controller` LoadBalancer 외부 IP(Hostname) 확인
+        ```bash
+        kubectl get svc \
+            -n ingress-nginx \
+            ingress-nginx-controller \
+            -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'  # EKS의 경우 LoadBalancer의 외부 IP를 URL 형식으로 할당
+        ```
+     - Cloudflare에서 연동할 도메인의 대시보드에서, **DNS > 레코드** 페이지 이동
+     - 레코드 추가 버튼 클릭 후, 다음 두 개의 레코드 추가
+        <p align="center">
+        <img src="https://files.cloudtype.io/webinar/webinar-03-02.png" width="90%" alt="Cloudtype"/>
+        </p>
+
+       - 유형: CNAME, 이름: *, IPv4 주소: 위에서 조회한 LoadBalancer 외부 IP
+       - 유형: CNAME, 이름: 현재 도메인(example.com인 경우 example.com), IPv4 주소: 위에서 조회한 LoadBalancer 외부 IP
   3. Cloudflare API KEY 환경변수 등록
+
       ```bash
         export CLOUDFLARE_ACME_EMAIL=<Cloudflare 계정 ID>
         export CLOUDFLARE_API_TOKEN=<Cloudflare API KEY>
       ```
+
   4. Cluster Issuer / Certificate 생성
 
       ```bash
@@ -326,13 +351,20 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
 - Service Account에 Secret 마운트
   
   ```bash
-  $ cat <<EOF | kubectl patch serviceaccount admin-user --type=merge --patch '{
-  "secrets":
-    {
-      "name": "admin-user-token"
-    }
-  }'
-  EOF
+  $ cat <<EOF | kubectl apply -f -
+  apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    name: admin-user
+    namespace: kubernetes-dashboard
+  secrets:
+    - name: admin-user-token
+  ```
+
+- Service Account 반영 확인
+  
+  ```bash
+  $ kubectl describe sa admin-user -n kubernetes-dashboard
   ```
 
 ## 📖 References
