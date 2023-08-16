@@ -338,7 +338,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
   4. Storage Class 적용
 
       ```bash
-      cat <<EOF | kubectl apply -f -
+      $ cat <<EOF | kubectl apply -f -
       apiVersion: storage.k8s.io/v1
       kind: StorageClass
       metadata:
@@ -358,7 +358,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
   5. PVC 생성 테스트
 
       ```bash
-      cat <<EOF | kubectl apply -f -
+      $ cat <<EOF | kubectl apply -f -
       apiVersion: v1
       kind: PersistentVolumeClaim
       metadata:
