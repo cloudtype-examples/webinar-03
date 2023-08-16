@@ -183,7 +183,9 @@ $ eksctl create nodegroup --cluster=[클러스터명] \
 
   $ kubectl apply -f <(cat <(kubectl get clusterrole aws-node -o yaml) append.yaml)
   $ kubectl set env daemonset aws-node -n kube-system ANNOTATE_POD_IP=true
-  $ kubectl delete pod calico-kube-controllers-[pod 이름 확인] -n calico-system
+  $ kubectl get po -n calico-system | grep calico-kube-controllers-                  # pod 이름은 난수 형태로 할당되어 개별적으로 확인 필요
+  $ kubectl delete pod calico-kube-controllers-[조회한 pod 이름] -n calico-system       # 위 명령어에서 확인된 pod 이름 입력하여 삭제
+  $ kubectl get po -n calico-system | grep calico-kube-controllers-                  # 삭제 후 재생성된 pod 정상 상태 확인
   ```
 
 ### Cert Manager 설치
