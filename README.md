@@ -62,8 +62,8 @@
   - macOS
 
     ```bash
-    curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
-    sudo installer -pkg AWSCLIV2.pkg -target /
+    $ curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+    $ sudo installer -pkg AWSCLIV2.pkg -target /
     ```
 
   - Windows
@@ -75,7 +75,7 @@
 - AWS 계정 설정
   
   ```bash
-  aws configure
+  $ aws configure
   ```
 
 ### kubectl
@@ -83,7 +83,7 @@
 - macOS
 
   ```bash
-  curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.25.9/2023-05-11/bin/darwin/amd64/kubectl
+  $ curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.25.9/2023-05-11/bin/darwin/amd64/kubectl
   ```
 
 - Windows(PowerShell)
@@ -97,9 +97,9 @@
 - macOS
 
   ```bash
-  brew tap weaveworks/tap
-  brew install weaveworks/tap/eksctl
-  eksctl version
+  $ brew tap weaveworks/tap
+  $ brew install weaveworks/tap/eksctl
+  $ eksctl version
   ```
 
 - Windows
@@ -108,9 +108,9 @@
 ### Helm
 
 ```bash
-curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-chmod 700 get_helm.sh
-./get_helm.sh
+$ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+$ chmod 700 get_helm.sh
+$ ./get_helm.sh
 ```
 
 ## 🛠️ EKS 클러스터 생성하기
