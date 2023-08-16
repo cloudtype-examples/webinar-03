@@ -31,7 +31,7 @@ spec:
       volumes: 
         - name: mysql-persistent-storage
           persistentVolumeClaim:
-            claimName: ebs-pvc
+            claimName: pvc-test
         - name: usermanagement-dbcreation-script
           configMap:
             name: usermanagement-dbcreation-script

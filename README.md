@@ -362,7 +362,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
       apiVersion: v1
       kind: PersistentVolumeClaim
       metadata:
-        name: gp3
+        name: pvc-test
       spec:
         accessModes:
           - ReadWriteOnce
