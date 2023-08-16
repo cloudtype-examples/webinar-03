@@ -305,10 +305,10 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
   1. 클러스터 IAM OIDC 제공업체 생성
 
       ```bash
-        $ export CLUSTER_NAME=cloudtype-test
-        $ OIDC_ID=$(aws eks describe-cluster --name $CLUSTER_NAME --query "cluster.identity.oidc.issuer" --output text | cut -d '/' -f 5)
-        $ aws iam list-open-id-connect-providers | grep $OIDC_ID | cut -d "/" -f4
-        $ eksctl utils associate-iam-oidc-provider --cluster $CLUSTER_NAME --approve
+      $ export CLUSTER_NAME=cloudtype-test
+      $ OIDC_ID=$(aws eks describe-cluster --name $CLUSTER_NAME --query "cluster.identity.oidc.issuer" --output text | cut -d '/' -f 5)
+      $ aws iam list-open-id-connect-providers | grep $OIDC_ID | cut -d "/" -f4
+      $ eksctl utils associate-iam-oidc-provider --cluster $CLUSTER_NAME --approve
       ```
 
   2. EBS CSI 드라이버 IAM 역할 생성
