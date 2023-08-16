@@ -237,8 +237,8 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
   3. Cloudflare API KEY 환경변수 등록
 
       ```bash
-        export CLOUDFLARE_ACME_EMAIL=<Cloudflare 계정 ID>
-        export CLOUDFLARE_API_TOKEN=<Cloudflare API KEY>
+      export CLOUDFLARE_ACME_EMAIL=<Cloudflare 계정 ID>
+      export CLOUDFLARE_API_TOKEN=<Cloudflare API KEY>
       ```
 
   4. Cluster Issuer / Certificate 생성
