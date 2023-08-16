@@ -308,6 +308,41 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
   $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
   ```
 
+- Kubernetes Dashboard Ingress 생성
+
+  ```bash
+  $ cat <<EOF | kubectl apply -f -
+  apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: kubernetes-dashboard-ingress
+    namespace: kubernetes-dashboard
+    annotations:
+      cert-manager.io/cluster-issuer: cloudtype-crt
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+      nginx.ingress.kubernetes.io/proxy-body-size: 100M
+      nginx.ingress.kubernetes.io/rewrite-target: /
+      nginx.ingress.kubernetes.io/whitelist-source-range: 0.0.0.0/0
+  spec:
+    tls:
+      - hosts:
+          - '*.[Cloudflare 도메인]'
+        secretName: kubernetes-dashboard-ingress-tls
+    rules:
+      - host: [서브도메인].[Cloudflare 도메인]
+        # Cloudflare 도메인이 example.com이고 설정을 희망하는 서브 도메인이 dashboard인 경우, dashboard.example.com 입력        
+        http:
+          paths:
+            - path: /
+              pathType: Prefix
+              backend:
+                service:
+                  name: kubernetes-dashboard
+                  port:
+                    number: 443
+  ```
+
 - Admin 권한 Service Account / ClusterRoleBinding 생성
 
   ```bash
