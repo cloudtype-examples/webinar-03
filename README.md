@@ -232,7 +232,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
         namespace: cert-manager
       type: Opaque
       stringData:
-        api-token: "${CLOUDFLARE_API_TOKEN}""
+        api-token: "${CLOUDFLARE_API_TOKEN}"
       ---
       apiVersion: cert-manager.io/v1
       kind: ClusterIssuer
