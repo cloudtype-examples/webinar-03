@@ -29,7 +29,7 @@
   - [Cert Manager 설치](#cert-manager-설치)
   - [Nginx Ingress Controller 설치](#nginx-ingress-controller-설치)
   - [Cloudflare 도메인 및 인증서 적용](#cloudflare-도메인-및-인증서-적용)
-  - [Kubernetes Dashboard 설치](#kubernetes-dashboard-설치)
+  - [AWS EBS CSI 설치](#aws-ebs-csi-설치)
 - [📖 References](#-references)
 - [💬 Contact](#-contact)
 
@@ -300,107 +300,78 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
       EOF
       ```
 
-### Kubernetes Dashboard 설치
+### AWS EBS CSI 설치
 
-- Kubernetes Dashboard 설치
+  1. 클러스터 IAM OIDC 제공업체 생성
 
-  ```bash
-  $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
-  ```
+      ```bash
+        $ export CLUSTER_NAME=cloudtype-test
+        $ OIDC_ID=$(aws eks describe-cluster --name $CLUSTER_NAME --query "cluster.identity.oidc.issuer" --output text | cut -d '/' -f 5)
+        $ aws iam list-open-id-connect-providers | grep $OIDC_ID | cut -d "/" -f4
+        $ eksctl utils associate-iam-oidc-provider --cluster $CLUSTER_NAME --approve
+      ```
 
-- Kubernetes Dashboard Ingress 생성
+  2. EBS CSI 드라이버 IAM 역할 생성
 
-  ```bash
-  $ cat <<EOF | kubectl apply -f -
-  apiVersion: networking.k8s.io/v1
-  kind: Ingress
-  metadata:
-    name: kubernetes-dashboard-ingress
-    namespace: kubernetes-dashboard
-    annotations:
-      cert-manager.io/cluster-issuer: cloudtype-crt
-      kubernetes.io/ingress.class: nginx
-      nginx.ingress.kubernetes.io/backend-protocol: HTTPS
-      nginx.ingress.kubernetes.io/proxy-body-size: 100M
-      nginx.ingress.kubernetes.io/rewrite-target: /
-      nginx.ingress.kubernetes.io/whitelist-source-range: 0.0.0.0/0
-  spec:
-    tls:
-      - hosts:
-          - '*.[Cloudflare 도메인]'
-        secretName: kubernetes-dashboard-ingress-tls
-    rules:
-      - host: [서브도메인].[Cloudflare 도메인]
-        # Cloudflare 도메인이 example.com이고 설정을 희망하는 서브 도메인이 dashboard인 경우, dashboard.example.com 입력        
-        http:
-          paths:
-            - path: /
-              pathType: Prefix
-              backend:
-                service:
-                  name: kubernetes-dashboard
-                  port:
-                    number: 443
-  ```
+      ```bash
+      $ eksctl create iamserviceaccount \
+          --name ebs-csi-controller-sa \
+          --namespace kube-system \
+          --cluster cloudtype-test \
+          --role-name AmazonEKS_EBS_CSI_DriverRole \
+          --role-only \
+          --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy \
+          --approve
+      ```
 
-- Admin 권한 Service Account / ClusterRoleBinding 생성
+  3. EKS add-on EBS CSI 드라이버 적용
 
-  ```bash
-  $ cat <<EOF | kubectl apply -f -
-  apiVersion: v1
-  kind: ServiceAccount
-  metadata:
-    name: admin-user
-    namespace: kubernetes-dashboard
-  ---
-  apiVersion: rbac.authorization.k8s.io/v1
-  kind: ClusterRoleBinding
-  metadata:
-    name: admin-user
-  roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: ClusterRole
-    name: cluster-admin
-  subjects:
-  - kind: ServiceAccount
-    name: admin-user
-    namespace: kubernetes-dashboard
-  EOF
-  ```
+      ```bash
+      $ export ACCOUNT_ID=[Account ID]
+      $ eksctl create addon 
+          --name aws-ebs-csi-driver \
+          --cluster ${CLUSTER_NAME} \
+          --service-account-role-arn arn:aws:iam::${ACCOUNT_ID}:role/AmazonEKS_EBS_CSI_DriverRole \
+          --force
+      ```
 
-- Secret 생성
+  4. Storage Class 적용
 
-  ```bash
-  $ cat <<EOF | kubectl apply -f -
-  apiVersion: v1
-  kind: Secret
-  metadata:
-    namespace: kubernetes-dashboard
-    name: admin-user-token
-    annotations:
-      kubernetes.io/service-account.name: admin-user
-  type: kubernetes.io/service-account-token
-  EOF
-  ```
+      ```bash
+      cat <<EOF | kubectl apply -f -
+      apiVersion: storage.k8s.io/v1
+      kind: StorageClass
+      metadata:
+        name: gp3
+        annotations:
+          storageclass.kubernetes.io/is-default-class: "true"
+      allowVolumeExpansion: true
+      provisioner: ebs.csi.aws.com
+      volumeBindingMode: Immediate
+      parameters:
+        type: gp3
+        allowAutoIOPSPerGBIncrease: 'true'
+        encrypted: 'true'
+      EOF
+      ```
 
-- Service Account에 Secret 마운트
-  
-  ```bash
-  $ cat <<EOF | kubectl apply -f -
-  apiVersion: v1
-  kind: ServiceAccount
-  metadata:
-    name: admin-user
-    namespace: kubernetes-dashboard
-  secrets:
-    - name: admin-user-token
-  ```
+  5. PVC 생성 테스트
 
-- Service Account 반영 확인
-  
-  ```bash
-  $ kubectl describe sa admin-user -n kubernetes-dashboard
-  ```
+      ```bash
+      cat <<EOF | kubectl apply -f -
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: gp3
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: gp3
+        resources:
+          requests:
+            storage: 1Gi
+      EOF
+      ```
 
 ## 📖 References
 
