@@ -30,6 +30,8 @@
   - [Nginx Ingress Controller 설치](#nginx-ingress-controller-설치)
   - [Cloudflare 도메인 및 인증서 적용](#cloudflare-도메인-및-인증서-적용)
   - [AWS EBS CSI 설치](#aws-ebs-csi-설치)
+- [☁️ 클라우드타입 연동하기](#️-클라우드타입-연동하기)
+  - [클라우드타입 에이전트 설치 및 클러스터 추가](#클라우드타입-에이전트-설치-및-클러스터-추가)
 - [📖 References](#-references)
 - [💬 Contact](#-contact)
 
@@ -372,6 +374,39 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
             storage: 1Gi
       EOF
       ```
+
+## ☁️ 클라우드타입 연동하기
+
+### 클라우드타입 에이전트 설치 및 클러스터 추가
+
+  1. 에이전트, 빌더 설치
+
+      ```bash
+      $ kubectl apply -f [agent.yaml]
+      $ kubectl apply -f [builder.yaml]
+      ```
+
+  2. AWS ECR 토큰 값 조회
+
+      ```bash
+      $ aws ecr get-login-password --region [리전 ex.ap-northeast-2]
+      ```
+
+  3. 에이전트 토큰값 조회
+
+      ```bash
+      $ kubectl get secrets agent-secret -n cloudtype -o jsonpath='{.data.agent-token}' | base64 --decode
+      ```
+
+  4. EKS 클러스터 API 엔드포인트 확인
+      <p align="center">
+        <img src="https://files.cloudtype.io/webinar/webinar-03-03.png" width="80%" alt="Cloudtype"/>
+      </p>
+
+  5. 클라우드타입에서 클러스터 추가
+      <p align="center">
+        <img src="https://files.cloudtype.io/webinar/webinar-03-04.png" width="60%" alt="Cloudtype"/>
+      </p>
 
 ## 📖 References
 
