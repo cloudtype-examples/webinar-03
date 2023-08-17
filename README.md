@@ -382,8 +382,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
   1. 에이전트, 빌더 설치
 
       ```bash
-      $ kubectl apply -f [agent.yaml]
-      $ kubectl apply -f [builder.yaml]
+      $ kubectl apply -f https://raw.githubusercontent.com/cloudtype/agent/master/k8s/agent.yaml
       ```
 
   2. AWS ECR 토큰 값 조회
@@ -403,7 +402,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
         <img src="https://files.cloudtype.io/webinar/webinar-03-03.png" width="80%" alt="Cloudtype"/>
       </p>
 
-  5. 클라우드타입에서 클러스터 추가
+  5. 클라우드타입에서 클러스터 연결
       <p align="center">
         <img src="https://files.cloudtype.io/webinar/webinar-03-04.png" width="60%" alt="Cloudtype"/>
       </p>
