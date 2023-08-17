@@ -166,9 +166,11 @@ $ eksctl create nodegroup --cluster=[클러스터명] \
   ```bash
   $ helm repo add projectcalico https://docs.tigera.io/calico/charts
   $ helm repo update
-  $ echo '{ installation: { kubernetesProvider: EKS }}' > values.yaml
-  $ kubectl create namespace tigera-operator
-  $ helm install calico projectcalico/tigera-operator --version v3.25.1 -f values.yaml --namespace tigera-operator
+  $ helm install calico projectcalico/tigera-operator \
+          --version v3.25.1 \
+          --set installation.kubernetesProvider=EKS \
+          --namespace tigera-operator \
+          --create-namespace
   ```
 
 - Network Policy Engine add-on 적용
