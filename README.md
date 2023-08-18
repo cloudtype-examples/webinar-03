@@ -139,22 +139,23 @@ $ eksctl create cluster --name=[클러스터명] \
 ### 노드 그룹 생성
 
 ```bash
-$ eksctl create nodegroup --cluster=[클러스터명] \
-                       --region=[리전] \
-                       --name=[노드그룹명] \
-                       --node-type=t3.medium \        # 인스턴스 유형 
-                       --nodes=2 \                    # 노드 수
-                       --nodes-min=2 \                # 노드 수 하한
-                       --nodes-max=4 \                # 노드 수 상한
-                       --node-volume-size=20 \        # 노드 볼륨 크기
-                       --ssh-access \
-                       --ssh-public-key=[키파일명] \  # SSH(*.pem) 퍼블릭 키
-                       --managed \
-                       --asg-access \
-                       --external-dns-access \
-                       --full-ecr-access \
-                       --appmesh-access \
-                       --alb-ingress-access 
+$ eksctl create nodegroup \
+                    --cluster=[클러스터명] \
+                    --region=[리전] \
+                    --name=[노드그룹명] \
+                    --node-type=t3.medium \      
+                    --nodes=2 \                
+                    --nodes-min=2 \              
+                    --nodes-max=4 \               
+                    --node-volume-size=20 \       
+                    --ssh-access \
+                    --ssh-public-key=[키파일명] \  
+                    --managed \
+                    --asg-access \
+                    --external-dns-access \
+                    --full-ecr-access \
+                    --appmesh-access \
+                    --alb-ingress-access 
 ```
 
 ## ⚙️ EKS 클러스터 세팅하기
@@ -177,7 +178,7 @@ $ eksctl create nodegroup --cluster=[클러스터명] \
 - Network Policy Engine add-on 적용
 
   ```bash
-  $ kubectl patch clusterrole aws-node 
+  $ kubectl patch clusterrole aws-node \
             --type='json' \
             -p='[{"op": "add", "path": "/rules/-1", "value":{ "apiGroups": [""], "resources": ["pods"], "verbs": ["patch"]}}]' \
             -o yaml
@@ -193,11 +194,11 @@ $ eksctl create nodegroup --cluster=[클러스터명] \
 $ helm repo add jetstack https://charts.jetstack.io
 $ helm repo update
 $ helm install \
-  cert-manager jetstack/cert-manager \
-  --namespace cert-manager \
-  --create-namespace \
-  --version v1.12.0 \
-  --set installCRDs=true
+      cert-manager jetstack/cert-manager \
+      --namespace cert-manager \
+      --create-namespace \
+      --version v1.12.0 \
+      --set installCRDs=true
 ```
 
 ### Nginx Ingress Controller 설치
@@ -327,7 +328,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
 
       ```bash
       $ export ACCOUNT_ID=[Account ID]
-      $ eksctl create addon 
+      $ eksctl create addon \
           --name aws-ebs-csi-driver \
           --cluster ${CLUSTER_NAME} \
           --service-account-role-arn arn:aws:iam::${ACCOUNT_ID}:role/AmazonEKS_EBS_CSI_DriverRole \
