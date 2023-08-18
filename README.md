@@ -171,21 +171,16 @@ $ eksctl create nodegroup --cluster=[클러스터명] \
           --set installation.kubernetesProvider=EKS \
           --namespace tigera-operator \
           --create-namespace
+  $ helm -n tigera-operator get values calico
   ```
 
 - Network Policy Engine add-on 적용
 
   ```bash
-  $ cat << EOF > append.yaml
-  - apiGroups:
-    - ""
-    resources:
-    - pods
-    verbs:
-    - patch
-  EOF
-
-  $ kubectl apply -f <(cat <(kubectl get clusterrole aws-node -o yaml) append.yaml)
+  $ kubectl patch clusterrole aws-node 
+            --type='json' \
+            -p='[{"op": "add", "path": "/rules/-1", "value":{ "apiGroups": [""], "resources": ["pods"], "verbs": ["patch"]}}]' \
+            -o yaml
   $ kubectl set env daemonset aws-node -n kube-system ANNOTATE_POD_IP=true
   $ kubectl get po -n calico-system | grep calico-kube-controllers-                  # pod 이름은 난수 형태로 할당되어 개별적으로 확인 필요
   $ kubectl delete pod calico-kube-controllers-[조회한 pod 이름] -n calico-system    # 위 명령어에서 확인된 pod 이름 입력하여 삭제
