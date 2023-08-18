@@ -122,9 +122,10 @@ $ ./get_helm.sh
 ### 클러스터 생성
 
 ```bash
-$ eksctl create cluster --name=[클러스터명] \
-                        --region=[리전] \
-                        --without-nodegroup 
+$ eksctl create cluster \
+          --name=[클러스터명] \
+          --region=[리전] \
+          --without-nodegroup 
 ```
 
 ### 키페어 생성
