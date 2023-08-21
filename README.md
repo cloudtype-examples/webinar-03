@@ -61,17 +61,10 @@
 ### AWS CLI
 
 - AWS CLI 설치
-  - macOS
 
     ```bash
     $ curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
     $ sudo installer -pkg AWSCLIV2.pkg -target /
-    ```
-
-  - Windows
-
-    ```bash
-    msiexec.exe /i https://awscli.amazonaws.com/AWSCLIV2.msi
     ```
 
 - AWS 계정 설정
@@ -82,16 +75,8 @@
 
 ### kubectl
 
-- macOS
-
   ```bash
   $ curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.25.9/2023-05-11/bin/darwin/amd64/kubectl
-  ```
-
-- Windows(PowerShell)
-
-  ```bash
-  curl.exe -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.25.9/2023-05-11/bin/windows/amd64/kubectl.exe
   ```
 
 ### eksctl
@@ -184,9 +169,9 @@ $ eksctl create nodegroup \
             -p='[{"op": "add", "path": "/rules/-1", "value":{ "apiGroups": [""], "resources": ["pods"], "verbs": ["patch"]}}]' \
             -o yaml
   $ kubectl set env daemonset aws-node -n kube-system ANNOTATE_POD_IP=true
-  $ kubectl get po -n calico-system | grep calico-kube-controllers-                  # pod 이름은 난수 형태로 할당되어 개별적으로 확인 필요
-  $ kubectl delete pod calico-kube-controllers-[조회한 pod 이름] -n calico-system    # 위 명령어에서 확인된 pod 이름 입력하여 삭제
-  $ kubectl get po -n calico-system | grep calico-kube-controllers-                  # 삭제 후 재생성된 pod 정상 상태 확인
+  $ kubectl get po -n calico-system | grep calico-kube-controllers-                   # pod 이름은 난수 형태로 할당되어 개별적으로 확인 필요
+  $ kubectl delete pod calico-kube-controllers-[조회한 pod 이름] -n calico-system     # 위 명령어에서 확인된 pod 이름 입력하여 삭제
+  $ kubectl get po -n calico-system | grep calico-kube-controllers-                   # 삭제 후 재생성된 pod 정상 상태 확인
   ```
 
 ### Cert Manager 설치
