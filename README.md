@@ -89,8 +89,18 @@
   $ eksctl version
   ```
 
-- Windows
-  - [다운로드 링크](https://eksctl.io/introduction/#for-windows)
+- Unix
+  
+  ```bash
+  $ ARCH=amd64    # Apple Silicon(M1/M2) 등 ARM 아키텍처인 경우 `ARCH=arm64` 입력
+  $ PLATFORM=$(uname -s)_$ARCH
+
+  $ curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
+
+  $ tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
+
+  $ sudo mv /tmp/eksctl /usr/local/bin
+  ```   
 
 ### Helm
 
