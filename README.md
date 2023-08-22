@@ -44,7 +44,6 @@
 - Calico: v3.25.1
 - Cert Manager: v1.12.0
 - Nginx Ingress Controller: v1.8.1
-- Kubernetes Dashboard: v2.7.0
 
 ## 🖇️ 준비사항
 
