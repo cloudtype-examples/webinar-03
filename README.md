@@ -117,8 +117,8 @@ $ ./get_helm.sh
 
 ```bash
 $ eksctl create cluster \
-          --name=[클러스터명] \
-          --region=[리전] \
+          --name=cloudtype-test \       
+          --region=ap-northeast-2 \
           --without-nodegroup 
 ```
 
@@ -135,9 +135,9 @@ $ eksctl create cluster \
 
 ```bash
 $ eksctl create nodegroup \
-                    --cluster=[클러스터명] \
-                    --region=[리전] \
-                    --name=[노드그룹명] \
+                    --cluster=cloudtype-test \
+                    --region=ap-northeast-2 \
+                    --name=ng-eks-01 \
                     --node-type=t3.medium \      
                     --nodes=2 \                
                     --nodes-min=2 \              
