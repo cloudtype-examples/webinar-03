@@ -138,13 +138,13 @@ $ eksctl create nodegroup \
                     --cluster=cloudtype-test \
                     --region=ap-northeast-2 \
                     --name=ng-eks-01 \
-                    --node-type=t3.medium \      
-                    --nodes=2 \                
-                    --nodes-min=2 \              
-                    --nodes-max=4 \               
-                    --node-volume-size=20 \       
+                    --node-type=t3.medium \
+                    --nodes=2 \
+                    --nodes-min=2 \
+                    --nodes-max=4 \
+                    --node-volume-size=20 \
                     --ssh-access \
-                    --ssh-public-key=[키파일명] \  
+                    --ssh-public-key=[키파일명] \
                     --managed \
                     --asg-access \
                     --external-dns-access \
