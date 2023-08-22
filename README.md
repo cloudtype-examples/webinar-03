@@ -283,8 +283,8 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
       apiVersion: cert-manager.io/v1
       kind: Certificate
       metadata:
-        name: cloudtype-app-tls
-        namespace: cloudtype-commons
+        name: cloudtype-tls
+        namespace: cloudtype
       spec:
         dnsNames:
           - "[Cloudflare에 등록된 도메인]"
@@ -292,7 +292,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
         issuerRef:
           kind: ClusterIssuer
           name: cloudtype-crt
-        secretName: cloudtype-app-tls
+        secretName: cloudtype-tls
       EOF
       ```
 
