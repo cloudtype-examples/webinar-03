@@ -117,9 +117,9 @@ $ ./get_helm.sh
 
 ```bash
 $ eksctl create cluster \
-          --name=cloudtype-test \       
+          --name=cloudtype-test \
           --region=ap-northeast-2 \
-          --without-nodegroup 
+          --without-nodegroup
 ```
 
 ### 키페어 생성
