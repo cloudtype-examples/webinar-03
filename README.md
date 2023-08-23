@@ -243,7 +243,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
       apiVersion: v1
       kind: Namespace
       metadata:
-        name: cloudtype-commons
+        name: cloudtype
       ---
       apiVersion: v1
       kind: Secret
@@ -375,7 +375,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
   1. 에이전트 설치
 
       ```bash
-      $ kubectl apply -f https://raw.githubusercontent.com/cloudtype/agent/master/k8s/agent.yaml
+      $ kubectl apply -f https://raw.githubusercontent.com/cloudtype/agent/master/k8s/v1.0.0/agent.yaml
       ```
 
   2. AWS ECR 토큰 값 조회
