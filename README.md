@@ -24,6 +24,7 @@
   - [클러스터 생성](#클러스터-생성)
   - [키페어 생성](#키페어-생성)
   - [노드 그룹 생성](#노드-그룹-생성)
+  - [노드 그룹 역할 내 권한 확인](#노드-그룹-역할-내-권한-확인)
 - [⚙️ EKS 클러스터 세팅하기](#️-eks-클러스터-세팅하기)
   - [Calico Network Policy Engine add-on 설치](#calico-network-policy-engine-add-on-설치)
   - [Cert Manager 설치](#cert-manager-설치)
@@ -153,6 +154,17 @@ $ eksctl create nodegroup \
                     --alb-ingress-access 
 ```
 
+### 노드 그룹 역할 내 권한 확인
+- ECR 관련 필요 권한 확인 필요
+  - 역할명
+    - eksctl-[클러스터명]-nodegroup-n-NodeInstanceRole-xxxxxxxxxx
+  - 권한
+    - AmazonEC2ContainerRegistryReadOnly
+    - AmazonEC2ContainerRegistryPowerUser
+<p align="center">
+<img src="https://files.cloudtype.io/webinar/webinar-03-05.png" width="90%" alt="Cloudtype"/>
+</p>
+
 ## ⚙️ EKS 클러스터 세팅하기
 
 ### Calico Network Policy Engine add-on 설치
@@ -215,12 +227,14 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
      - 클라우드타입과 연동할 도메인 확인 후, 토큰 생성 버튼 클릭
   2. `ingress-nginx-controller` LoadBalancer 외부 IP CNAME 레코드 등록
      - `ingress-nginx-controller` LoadBalancer 외부 IP(Hostname) 확인
+
         ```bash
         $ kubectl get svc \
             -n ingress-nginx \
             ingress-nginx-controller \
             -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'  # EKS의 경우 LoadBalancer의 외부 IP를 URL 형식으로 할당
         ```
+
      - Cloudflare에서 연동할 도메인의 대시보드에서, **DNS > 레코드** 페이지 이동
      - 레코드 추가 버튼 클릭 후, 다음 두 개의 레코드 추가
         <p align="center">
@@ -330,7 +344,13 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
           --force
       ```
 
-  4. Storage Class 적용
+  4. 기존 Storage Class dafault 해제
+
+      ```bash
+      $ kubectl patch storageclass gp2 -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
+      ```
+
+  5. 신규 Storage Class dafault 설정
 
       ```bash
       $ cat <<EOF | kubectl apply -f -
@@ -350,7 +370,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
       EOF
       ```
 
-  5. PVC 생성 테스트
+  6. PVC 생성 테스트
 
       ```bash
       $ cat <<EOF | kubectl apply -f -
@@ -378,24 +398,18 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
       $ kubectl apply -f https://raw.githubusercontent.com/cloudtype/agent/master/k8s/v1.0.0/agent.yaml
       ```
 
-  2. AWS ECR 토큰 값 조회
-
-      ```bash
-      $ aws ecr get-login-password --region [리전 ex.ap-northeast-2]
-      ```
-
-  3. 에이전트 토큰 값 조회
+  2. 에이전트 토큰 값 조회
 
       ```bash
       $ kubectl get secrets agent-secret -n cloudtype -o jsonpath='{.data.agent-token}' | base64 --decode
       ```
 
-  4. EKS 클러스터 API 엔드포인트 확인
+  3. EKS 클러스터 API 엔드포인트 확인
       <p align="center">
         <img src="https://files.cloudtype.io/webinar/webinar-03-03.png" width="80%" alt="Cloudtype"/>
       </p>
 
-  5. 클라우드타입에서 클러스터 연결
+  4. 클라우드타입에서 클러스터 연결
       <p align="center">
         <img src="https://files.cloudtype.io/webinar/webinar-03-04.png" width="60%" alt="Cloudtype"/>
       </p>
