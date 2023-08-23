@@ -404,10 +404,15 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
       $ kubectl get secrets agent-secret -n cloudtype -o jsonpath='{.data.agent-token}' | base64 --decode
       ```
 
-  3. EKS 클러스터 API 엔드포인트 확인
-      <p align="center">
-        <img src="https://files.cloudtype.io/webinar/webinar-03-03.png" width="80%" alt="Cloudtype"/>
-      </p>
+  3. EKS 클러스터 에이전트 접속 주소 확인
+
+      ```bash
+      $ kubectl get svc \
+            -n cloudtype \
+            agent \
+            -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' \
+        | xargs -I{} echo "https://{}"
+      ```
 
   4. 클라우드타입에서 클러스터 연결
       <p align="center">
