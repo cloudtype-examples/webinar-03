@@ -324,7 +324,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
       ```
 
      - 정상적으로 TLS 인증서를 발급할 수 있는 상태인지 확인 필요
-       - Order의 **STATE** 항목 값이 **valid**
+       - Order의 **STATE** 항목 값이 **valid**여야 클라우드타입에서 배포한 서비스에 대하여 HTTPS 인증이 정상적으로 진행
      - Cloudflare DNS의 도메인에 인증서가 발급되기 위한 상태가 되기까지 약 30분~1시간 소요
 
 ### AWS EBS CSI 설치
