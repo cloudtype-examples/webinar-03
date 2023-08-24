@@ -129,12 +129,12 @@ $ eksctl create cluster \
 
 ### 키페어 생성
 
-1. **EC2 > Network & Security > Key Pairs** 메뉴로 진입합니다.
-2. **Create key pair** 버튼을 누르고 다음의 항목을 확인하고 키를 생성합니다.
+1. **EC2 > Network & Security > Key Pairs** 메뉴로 진입
+2. **Create key pair** 버튼을 누르고 다음의 항목을 확인 후 키를 생성
    - Name: 키페어명
    - Key pair type: RSA
    - Private key file format: .pem
-3. 키페어 생성이 정상적으로 완료되면 `.pem` 확장자의 파일이 다운로드 됩니다. 보안에 유의하여 안전한 위치에 파일을 보관합니다. 
+3. 키페어 생성이 정상적으로 완료되면 `.pem` 확장자의 파일이 다운로드 되며, 보안에 유의하여 안전한 위치에 파일 보관
 
 ### 노드 그룹 생성
 
@@ -315,6 +315,18 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
       EOF
       ```
 
+  5. Cert Manager Order 상태 확인
+
+      ```bash
+      $ kubectl get order -n cloudtype \
+        | awk '/cloudtype-tls-/{print $1}' \
+        | xargs kubectl get order -n cloudtype
+      ```
+
+     - 정상적으로 TLS 인증서를 발급할 수 있는 상태인지 확인 필요
+       - Order의 **STATE** 항목 값이 **valid**
+     - Cloudflare DNS의 도메인에 인증서가 발급되기 위한 상태가 되기까지 약 30분~1시간 소요
+
 ### AWS EBS CSI 설치
 
   1. 클러스터 IAM OIDC 제공업체 생성
@@ -393,6 +405,14 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
             storage: 1Gi
       EOF
       ```
+
+  7. PVC 상태 확인
+
+      ```bash
+      $ kubectl get pvc pvc-test
+      ```
+
+      - PVC의 **STATUS**가 **Bound**인지 확인
 
 ## ☁️ 클라우드타입 연동하기
 
