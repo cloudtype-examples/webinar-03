@@ -34,6 +34,8 @@
 - [☁️ 클라우드타입 연동하기](#️-클라우드타입-연동하기)
   - [클라우드타입 에이전트 설치 및 클러스터 추가](#클라우드타입-에이전트-설치-및-클러스터-추가)
   - [컨테이너 레지스트리 연결](#컨테이너-레지스트리-연결)
+  - [클러스터 네트워크 설정](#클러스터-네트워크-설정)
+  - [클러스터 스토리지 설정](#클러스터-스토리지-설정)
 - [📖 References](#-references)
 - [💬 Contact](#-contact)
 
@@ -469,6 +471,34 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
       <p align="center">
         <img src="https://files.cloudtype.io/webinar/webinar-03-08.png" width="60%" alt="Cloudtype"/>
       </p>
+
+### 클러스터 네트워크 설정
+
+  1. 기본 도메인
+      - 이전 단계에서 Nginx Ingress Controller 세팅 시 사용했던 Cloudflare 도메인
+  2. 인그레스 정보
+      - 인그레스 클래스: nginx
+      - 인그레스 IP: Nginx Ingress Controller LoadBalancer 외부 IP/Hostname
+  3. 로드밸런서 유형
+      - LoadBalancer
+
+  <p align="center">
+    <img src="https://files.cloudtype.io/webinar/webinar-03-09.png" width="65%" alt="Cloudtype"/>
+  </p>
+
+
+
+### 클러스터 스토리지 설정
+
+  1. 스토리지 클래스
+     - gp3
+     - 입력하지 않으면 클러스터의 default 스토리지 클래스 사용
+  2. 볼륨 모드
+     - RWO
+
+  <p align="center">
+    <img src="https://files.cloudtype.io/webinar/webinar-03-10.png" width="65%" alt="Cloudtype"/>
+  </p>
 
 ## 📖 References
 
