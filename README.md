@@ -33,6 +33,7 @@
   - [AWS EBS CSI 설치](#aws-ebs-csi-설치)
 - [☁️ 클라우드타입 연동하기](#️-클라우드타입-연동하기)
   - [클라우드타입 에이전트 설치 및 클러스터 추가](#클라우드타입-에이전트-설치-및-클러스터-추가)
+  - [컨테이너 레지스트리 연결](#컨테이너-레지스트리-연결)
 - [📖 References](#-references)
 - [💬 Contact](#-contact)
 
@@ -443,6 +444,30 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
   4. 클라우드타입에서 클러스터 연결
       <p align="center">
         <img src="https://files.cloudtype.io/webinar/webinar-03-04.png" width="60%" alt="Cloudtype"/>
+      </p>
+
+### 컨테이너 레지스트리 연결
+
+  1. 레지스트리 정보 확인
+      - AWS ECR 콘솔에서 **Create repository** 버튼 누른 후 **Repository name** 항목에서 ECR 서버 주소 확인
+      <p align="center">
+        <img src="https://files.cloudtype.io/webinar/webinar-03-06.png" width="70%" alt="Cloudtype"/>
+      </p>
+
+  2. 레지스트리 설정창 진입
+      - 좌측 네비바에서 클러스터 선택 후 설정 탭으로 이동하여 **컨테이너 저장소 연결하기** 버튼 클릭
+      <p align="center">
+        <img src="https://files.cloudtype.io/webinar/webinar-03-07.png" width="70%" alt="Cloudtype"/>
+      </p>
+
+  3. 레지스트리 정보 설정
+      - 저장소 제공자: AWS Elastic Container Registry
+      - 접속 주소: 1번 과정에서 확인한 ECR 접속 주소
+      - AWS Access Key Id: ECR 관련 권한이 부여된 사용자의 Access Key
+      - AWS Secret Access Key: 상동
+      - Region: ECR 운용 대상 리전
+      <p align="center">
+        <img src="https://files.cloudtype.io/webinar/webinar-03-08.png" width="60%" alt="Cloudtype"/>
       </p>
 
 ## 📖 References
