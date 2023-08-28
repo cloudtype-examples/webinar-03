@@ -427,13 +427,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
       $ kubectl apply -f https://raw.githubusercontent.com/cloudtype/agent/master/k8s/v1.0.0/agent.yaml
       ```
 
-  2. 에이전트 토큰 값 조회
-
-      ```bash
-      $ kubectl get secrets agent-secret -n cloudtype -o jsonpath='{.data.agent-token}' | base64 --decode
-      ```
-
-  3. EKS 클러스터 에이전트 접속 주소 확인
+  2. EKS 클러스터 에이전트 접속 주소 확인
 
       ```bash
       $ kubectl get svc \
@@ -442,6 +436,14 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
             -o jsonpath='{.status.loadBalancer.ingress[0].hostname}' \
         | xargs -I{} echo "https://{}"
       ```
+
+  3. 에이전트 토큰 값 조회
+
+      ```bash
+      $ kubectl get secrets agent-secret -n cloudtype -o jsonpath='{.data.agent-token}' | base64 --decode
+      ```
+
+
 
   4. 클라우드타입에서 클러스터 연결
       <p align="center">
