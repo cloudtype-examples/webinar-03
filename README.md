@@ -476,19 +476,23 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
 
 ### 클러스터 네트워크 설정
 
-  1. 기본 도메인
+  1. 인증서 시크릿 이름
+      - cloudtype-tls
+  2. 인증서 시크릿 네임스페이스
+      - cloudtype
+  3. 인증서 발급기
+      - cloudtype-crt
+  4. 기본 도메인
       - 이전 단계에서 Nginx Ingress Controller 세팅 시 사용했던 Cloudflare 도메인
-  2. 인그레스 정보
+  5. 인그레스 정보
       - 인그레스 클래스: nginx
       - 인그레스 IP: Nginx Ingress Controller LoadBalancer 외부 IP/Hostname
-  3. 로드밸런서 유형
+  6. 로드밸런서 유형
       - LoadBalancer
 
   <p align="center">
     <img src="https://files.cloudtype.io/webinar/webinar-03-09.png" width="65%" alt="Cloudtype"/>
   </p>
-
-
 
 ### 클러스터 스토리지 설정
 
