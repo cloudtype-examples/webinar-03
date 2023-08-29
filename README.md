@@ -357,7 +357,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
   3. EKS add-on EBS CSI 드라이버 적용
 
       ```bash
-      $ export ACCOUNT_ID=[Account ID]
+      $ export ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text | xargs -L 1)
       $ eksctl create addon \
           --name aws-ebs-csi-driver \
           --cluster ${CLUSTER_NAME} \
