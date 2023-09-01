@@ -332,7 +332,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
   1. 레지스트리 생성
       - GCP ECR 콘솔에서 **저장소 만들기** 버튼 누른 후 저장소명 작성, 형식에서 **Docker** 선택, 리전 선택 후 만들기 버튼 클릭
       <p align="center">
-        <img src="https://files.cloudtype.io/guides/gke-09.png" width="70%" alt="Cloudtype"/>
+        <img src="https://files.cloudtype.io/guides/gke-08.png" width="70%" alt="Cloudtype"/>
       </p>
 
   2. 레지스트리 주소 확인
