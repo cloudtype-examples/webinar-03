@@ -270,19 +270,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
 
 ### Compute Engine Persistent Disk CSI 테스트
 
-  1. standard-rwo 스토리지 클래스 default 해제
-
-      ```bash
-      $ kubectl patch storageclass standard-rwo -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
-      ```
-
-  2. standard 스토리지 클래스 default 설정
-
-      ```bash
-      $ kubectl patch storageclass standard -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
-      ```
-
-  3. PVC 생성 테스트
+  1. PVC 생성 테스트
 
       ```bash
       $ cat <<EOF | kubectl apply -f -
@@ -300,7 +288,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
       EOF
       ```
 
-  4. PVC 상태 확인
+  2. PVC 상태 확인
 
       ```bash
       $ kubectl get pvc pvc-test
