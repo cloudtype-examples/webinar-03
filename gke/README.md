@@ -171,7 +171,7 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
         </p>
      - 클라우드타입과 연동할 도메인 확인 후, 토큰 생성 버튼 클릭
   
-  2. `ingress-nginx-controller` LoadBalancer 외부 IP CNAME 레코드 등록
+  2. `ingress-nginx-controller` LoadBalancer 외부 IP A 레코드 등록
      - `ingress-nginx-controller` LoadBalancer 외부 IP(Hostname) 확인
 
         ```bash
@@ -187,8 +187,8 @@ $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/co
         <img src="https://files.cloudtype.io/webinar/webinar-03-02.png" width="90%" alt="Cloudtype"/>
         </p>
 
-       - 유형: CNAME, 이름: *, IPv4 주소: 위에서 조회한 LoadBalancer 외부 IP
-       - 유형: CNAME, 이름: 현재 도메인(example.com인 경우 example.com), IPv4 주소: 위에서 조회한 LoadBalancer 외부 IP
+       - 유형: A, 이름: *, IPv4 주소: 위에서 조회한 LoadBalancer 외부 IP
+       - 유형: A, 이름: 현재 도메인(example.com인 경우 example.com), IPv4 주소: 위에서 조회한 LoadBalancer 외부 IP
 
   3. Cloudflare API KEY 환경변수 등록
 
